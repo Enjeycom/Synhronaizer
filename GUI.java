@@ -16,7 +16,7 @@ import javax.swing.JSlider;
 import javax.swing.JTextArea;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-// панель вывода информации о копировании
+// РїР°РЅРµР»СЊ РІС‹РІРѕРґР° РёРЅС„РѕСЂРјР°С†РёРё Рѕ РєРѕРїРёСЂРѕРІР°РЅРёРё
 class PanelInfo extends JPanel{
 	private static final long serialVersionUID = 1L;
 	GUI gui;
@@ -62,7 +62,7 @@ class PanelInfo extends JPanel{
 		info.setText(str1+getEndString(str2)+"\n"+info.getText());
 	}
 }
-// панель выбора настроек
+// РїР°РЅРµР»СЊ РІС‹Р±РѕСЂР° РЅР°СЃС‚СЂРѕРµРє
 class PanelControl extends JPanel{
 	private static final long serialVersionUID = 1L;
 	JButton chose_folder1,chose_folder2,sinhronaiz;
@@ -108,27 +108,27 @@ class PanelControl extends JPanel{
 		
 		chose_folder1.setText("....");
 		chose_folder2.setText("....");
-		sinhronaiz.setText("Синхронизировать");
+		sinhronaiz.setText("Г‘ГЁГ­ГµГ°Г®Г­ГЁГ§ГЁГ°Г®ГўГ ГІГј");
 		folder1.setText(gui.settings.inFolder);
 		folder2.setText(gui.settings.outFolder);
-		unf.setText("Заменять существующие файлы");
+		unf.setText("Г‡Г Г¬ГҐГ­ГїГІГј Г±ГіГ№ГҐГ±ГІГўГіГѕГ№ГЁГҐ ГґГ Г©Г«Г»");
 		unf.setSelected(gui.settings.update);
-		uonf.setText("Заменять толко устаревшие файлы");
+		uonf.setText("Г‡Г Г¬ГҐГ­ГїГІГј ГІГ®Г«ГЄГ® ГіГ±ГІГ Г°ГҐГўГёГЁГҐ ГґГ Г©Г«Г»");
 		if(!gui.settings.update){
 			uonf.setEnabled(false);
 		}
 		uonf.setSelected(gui.settings.old_update);
-		df.setText("Удалять файлы отсутствующие в источнике");
+		df.setText("Г“Г¤Г Г«ГїГІГј ГґГ Г©Г«Г» Г®ГІГ±ГіГІГ±ГІГўГіГѕГ№ГЁГҐ Гў ГЁГ±ГІГ®Г·Г­ГЁГЄГҐ");
 		df.setSelected(gui.settings.delete);
 		slider.setValue(gui.settings.max_process);
-		potoki.setText("Количество потоков: "+slider.getValue());
+		potoki.setText("ГЉГ®Г«ГЁГ·ГҐГ±ГІГўГ® ГЇГ®ГІГ®ГЄГ®Гў: "+slider.getValue());
 		slider.setMaximum(16);
 		slider.setMinimum(1);
 		slider.addChangeListener(new ChangeListener(){
 			@Override
 			public void stateChanged(ChangeEvent arg0) {
 				gui.settings.max_process=slider.getValue();
-				potoki.setText("Количество потоков: "+slider.getValue());
+				potoki.setText("ГЉГ®Г«ГЁГ·ГҐГ±ГІГўГ® ГЇГ®ГІГ®ГЄГ®Гў: "+slider.getValue());
 			}
 		});
 		chose_folder1.addActionListener(new ActionListener(){
@@ -198,7 +198,7 @@ class PanelControl extends JPanel{
 		add(potoki);
 	}
 }
-//окно приложения
+//РѕРєРЅРѕ РїСЂРёР»РѕР¶РµРЅРёСЏ
 public class GUI extends JFrame{
 	private static final long serialVersionUID = 1L;
 	Settings settings;
@@ -211,7 +211,7 @@ public class GUI extends JFrame{
 		setContentPane(controlPanel);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setBounds(200,200,530,250);
-		setTitle("Синхронизатор");
+		setTitle("Г‘ГЁГ­ГµГ°Г®Г­ГЁГ§Г ГІГ®Г°");
 		addWindowListener(new WindowAdapter() {
 		     public void windowClosing(WindowEvent event) {
 		    	 try {

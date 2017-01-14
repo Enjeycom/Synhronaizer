@@ -30,8 +30,8 @@ public class Settings {
 			update=false;
 			old_update=false;
 			delete=false;
-			inFolder="Ïàïêà íå âûáðàíà";
-			outFolder="Ïàïêà íå âûáðàíà";
+			inFolder="Папка не выбрана";
+			outFolder="Папка не выбрана";
 			max_process=4;
 		}
 	}

@@ -4,7 +4,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-//Класс настроек (сохраняет и загружает настройки)
+//РљР»Р°СЃСЃ РЅР°СЃС‚СЂРѕРµРє (СЃРѕС…СЂР°РЅСЏРµС‚ Рё Р·Р°РіСЂСѓР¶Р°РµС‚ РЅР°СЃС‚СЂРѕР№РєРё)
 public class Settings {
 	String inFolder;
 	String outFolder;
@@ -30,8 +30,8 @@ public class Settings {
 			update=false;
 			old_update=false;
 			delete=false;
-			inFolder="Папка не выбрана";
-			outFolder="Папка не выбрана";
+			inFolder="ГЏГ ГЇГЄГ  Г­ГҐ ГўГ»ГЎГ°Г Г­Г ";
+			outFolder="ГЏГ ГЇГЄГ  Г­ГҐ ГўГ»ГЎГ°Г Г­Г ";
 			max_process=4;
 		}
 	}

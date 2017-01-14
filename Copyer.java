@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.concurrent.locks.ReentrantLock;
-//Класс - копирования (каждый объект - поток)
+//РљР»Р°СЃСЃ - РєРѕРїРёСЂРѕРІР°РЅРёСЏ (РєР°Р¶РґС‹Р№ РѕР±СЉРµРєС‚ - РїРѕС‚РѕРє)
 public class Copyer extends Thread{
 	File in;
 	File out;
@@ -23,7 +23,7 @@ public class Copyer extends Thread{
 		lock.lock();
 		process_started++;
 		lock.unlock();
-		//копирование
+		//РєРѕРїРёСЂРѕРІР°РЅРёРµ
 	    try {
 			FileInputStream fis = new FileInputStream(in);
 			FileOutputStream fos = new FileOutputStream(out);

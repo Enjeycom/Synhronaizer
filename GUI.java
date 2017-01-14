@@ -108,27 +108,27 @@ class PanelControl extends JPanel{
 		
 		chose_folder1.setText("....");
 		chose_folder2.setText("....");
-		sinhronaiz.setText("Ñèíõðîíèçèðîâàòü");
+		sinhronaiz.setText("Синхронизировать");
 		folder1.setText(gui.settings.inFolder);
 		folder2.setText(gui.settings.outFolder);
-		unf.setText("Çàìåíÿòü ñóùåñòâóþùèå ôàéëû");
+		unf.setText("Заменять существующие файлы");
 		unf.setSelected(gui.settings.update);
-		uonf.setText("Çàìåíÿòü òîëêî óñòàðåâøèå ôàéëû");
+		uonf.setText("Заменять толко устаревшие файлы");
 		if(!gui.settings.update){
 			uonf.setEnabled(false);
 		}
 		uonf.setSelected(gui.settings.old_update);
-		df.setText("Óäàëÿòü ôàéëû îòñóòñòâóþùèå â èñòî÷íèêå");
+		df.setText("Удалять файлы отсутствующие в источнике");
 		df.setSelected(gui.settings.delete);
 		slider.setValue(gui.settings.max_process);
-		potoki.setText("Êîëè÷åñòâî ïîòîêîâ: "+slider.getValue());
+		potoki.setText("Количество потоков: "+slider.getValue());
 		slider.setMaximum(16);
 		slider.setMinimum(1);
 		slider.addChangeListener(new ChangeListener(){
 			@Override
 			public void stateChanged(ChangeEvent arg0) {
 				gui.settings.max_process=slider.getValue();
-				potoki.setText("Êîëè÷åñòâî ïîòîêîâ: "+slider.getValue());
+				potoki.setText("Количество потоков: "+slider.getValue());
 			}
 		});
 		chose_folder1.addActionListener(new ActionListener(){
@@ -211,7 +211,7 @@ public class GUI extends JFrame{
 		setContentPane(controlPanel);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setBounds(200,200,530,250);
-		setTitle("Ñèíõðîíèçàòîð");
+		setTitle("Синхронизатор");
 		addWindowListener(new WindowAdapter() {
 		     public void windowClosing(WindowEvent event) {
 		    	 try {

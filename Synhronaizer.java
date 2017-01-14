@@ -9,7 +9,7 @@ import java.util.concurrent.locks.ReentrantLock;
 
 import javax.swing.JOptionPane;
 
-//Класс сихронизации (создает потоки копирования)
+//РљР»Р°СЃСЃ СЃРёС…СЂРѕРЅРёР·Р°С†РёРё (СЃРѕР·РґР°РµС‚ РїРѕС‚РѕРєРё РєРѕРїРёСЂРѕРІР°РЅРёСЏ)
 public class Synhronaizer extends Thread{
 	Settings settings;
 	GUI gui;
@@ -25,17 +25,17 @@ public class Synhronaizer extends Thread{
 		n_delete_files=new Integer(0);
 		process_started=new Integer(0);
 	}
-	//функция возврашает старый адрес файла
+	//С„СѓРЅРєС†РёСЏ РІРѕР·РІСЂР°С€Р°РµС‚ СЃС‚Р°СЂС‹Р№ Р°РґСЂРµСЃ С„Р°Р№Р»Р°
 	private String oldAdress(String adress){
 		return (settings.inFolder+adress.substring(settings.outFolder.length(),adress.length()));
 	}
-	//функция возврашает новый адрес файла
+	//С„СѓРЅРєС†РёСЏ РІРѕР·РІСЂР°С€Р°РµС‚ РЅРѕРІС‹Р№ Р°РґСЂРµСЃ С„Р°Р№Р»Р°
 	private String newAdress(String adress){
 		return (settings.outFolder+adress.substring(settings.inFolder.length(),adress.length()));
 	}
-	//функция удаляет файлы отсутствующия в источнике
+	//С„СѓРЅРєС†РёСЏ СѓРґР°Р»СЏРµС‚ С„Р°Р№Р»С‹ РѕС‚СЃСѓС‚СЃС‚РІСѓСЋС‰РёСЏ РІ РёСЃС‚РѕС‡РЅРёРєРµ
 	public  void scanFolderDelete(File folder) throws IOException{
-		gui.infoPanel.plusInfo("Удаление в папке:",folder.getAbsolutePath());
+		gui.infoPanel.plusInfo("Г“Г¤Г Г«ГҐГ­ГЁГҐ Гў ГЇГ ГЇГЄГҐ:",folder.getAbsolutePath());
 		File files[]=folder.listFiles();
 		for(int i=0;i<files.length;i++){
 			File tmp=new File(oldAdress(files[i].getAbsolutePath()));
@@ -43,22 +43,22 @@ public class Synhronaizer extends Thread{
 				scanFolderDelete(files[i]);
 			}else
 				if(!tmp.exists()&&!tmp.getName().equals("Indexed Locations.search-ms")){
-					gui.infoPanel.plusInfo("Удаление файла",tmp.getAbsolutePath());
+					gui.infoPanel.plusInfo("Г“Г¤Г Г«ГҐГ­ГЁГҐ ГґГ Г©Г«Г ",tmp.getAbsolutePath());
 					Files.delete(files[i].toPath());
 					n_delete_files++;
 				}
 		}
 	}
-	// функция создает новые потоки копирования и следит за их количеством
+	// С„СѓРЅРєС†РёСЏ СЃРѕР·РґР°РµС‚ РЅРѕРІС‹Рµ РїРѕС‚РѕРєРё РєРѕРїРёСЂРѕРІР°РЅРёСЏ Рё СЃР»РµРґРёС‚ Р·Р° РёС… РєРѕР»РёС‡РµСЃС‚РІРѕРј
 	void copy(File f1,File f2){
 		while(process_started>settings.max_process){}
 		tasks.add(new Copyer(f1,f2,process_started,lock));
 		tasks.get(tasks.size()-1).start();
 		n_synh_files++;
 	}
-	//функция реверсивно синхронизирует папки
+	//С„СѓРЅРєС†РёСЏ СЂРµРІРµСЂСЃРёРІРЅРѕ СЃРёРЅС…СЂРѕРЅРёР·РёСЂСѓРµС‚ РїР°РїРєРё
 	public  void scanFolder(File folder) throws IOException, NoSuchAlgorithmException{
-		gui.infoPanel.plusInfo("Cинхронизация папки:",folder.getAbsolutePath());
+		gui.infoPanel.plusInfo("CГЁГ­ГµГ°Г®Г­ГЁГ§Г Г¶ГЁГї ГЇГ ГЇГЄГЁ:",folder.getAbsolutePath());
 		File files[]=folder.listFiles();
 		for(int i=0;i<files.length;i++){
 			File tmp=new File(newAdress(files[i].getAbsolutePath()));
@@ -68,22 +68,22 @@ public class Synhronaizer extends Thread{
 				}
 				scanFolder(files[i]);
 			}else{
-				// случаи в которых файл копируется:
+				// СЃР»СѓС‡Р°Рё РІ РєРѕС‚РѕСЂС‹С… С„Р°Р№Р» РєРѕРїРёСЂСѓРµС‚СЃСЏ:
 				if(!tmp.exists() || (settings.update&&!settings.old_update)){
-					copy(files[i],tmp); //Копирование в случае если файла нет либо стоит галка заменять файлы
+					copy(files[i],tmp); //РљРѕРїРёСЂРѕРІР°РЅРёРµ РІ СЃР»СѓС‡Р°Рµ РµСЃР»Рё С„Р°Р№Р»Р° РЅРµС‚ Р»РёР±Рѕ СЃС‚РѕРёС‚ РіР°Р»РєР° Р·Р°РјРµРЅСЏС‚СЊ С„Р°Р№Р»С‹
 				}else
 				if((settings.old_update&&tmp.lastModified()<files[i].lastModified())){
-					copy(files[i],tmp);	//Копирование в случае если файл существует и стоит галка заменять устаревгие файлы
+					copy(files[i],tmp); //РљРѕРїРёСЂРѕРІР°РЅРёРµ РІ СЃР»СѓС‡Р°Рµ РµСЃР»Рё С„Р°Р№Р» СЃСѓС‰РµСЃС‚РІСѓРµС‚ Рё СЃС‚РѕРёС‚ РіР°Р»РєР° Р·Р°РјРµРЅСЏС‚СЊ СѓСЃС‚Р°СЂРµРІРіРёРµ С„Р°Р№Р»С‹
 				}else
 				if(settings.old_update&&tmp.lastModified()==files[i].lastModified()){
 					if(!controlSumChek(tmp,files[i]))
-						copy(files[i],tmp); //Копирование в случае если файл существует, стоит галка заменять устаревгие файлы и файлы имеют одинаковую дату изменения
+						copy(files[i],tmp); //РљРѕРїРёСЂРѕРІР°РЅРёРµ РІ СЃР»СѓС‡Р°Рµ РµСЃР»Рё С„Р°Р№Р» СЃСѓС‰РµСЃС‚РІСѓРµС‚, СЃС‚РѕРёС‚ РіР°Р»РєР° Р·Р°РјРµРЅСЏС‚СЊ СѓСЃС‚Р°СЂРµРІРіРёРµ С„Р°Р№Р»С‹ Рё С„Р°Р№Р»С‹ РёРјРµСЋС‚ РѕРґРёРЅР°РєРѕРІСѓСЋ РґР°С‚Сѓ РёР·РјРµРЅРµРЅРёСЏ
 				}	
 			}
 		}
 		
 	}
-	//функция считает контрольную сумму
+	//С„СѓРЅРєС†РёСЏ СЃС‡РёС‚Р°РµС‚ РєРѕРЅС‚СЂРѕР»СЊРЅСѓСЋ СЃСѓРјРјСѓ
 	public static String getControlSum(File file) throws NoSuchAlgorithmException, IOException {
          final MessageDigest md = MessageDigest.getInstance("SHA-1");
          final FileInputStream fis = new FileInputStream(file);
@@ -97,27 +97,27 @@ public class Synhronaizer extends Thread{
              sb.append(Integer.toString((mdBytes[i] & 0xff) + 0x100, 16).substring(1));
          return sb.toString();
 	}
-	//фунция сравнивает контрольные суммы
+	//С„СѓРЅС†РёСЏ СЃСЂР°РІРЅРёРІР°РµС‚ РєРѕРЅС‚СЂРѕР»СЊРЅС‹Рµ СЃСѓРјРјС‹
 	private boolean controlSumChek(File f1, File f2) throws NoSuchAlgorithmException, IOException {
 		if(getControlSum(f1).equals(getControlSum(f2))) 
 			return true;
 		return false;
 	}
-	//поток синхронизации
+	//РїРѕС‚РѕРє СЃРёРЅС…СЂРѕРЅРёР·Р°С†РёРё
 	@Override
 	public void run(){
 			if(!new File(settings.inFolder).exists()||!new File(settings.outFolder).exists()){
-				JOptionPane.showMessageDialog(gui,"Вы не выбрали папки или папки не существуют!","Ошибка!",JOptionPane.WARNING_MESSAGE);
+				JOptionPane.showMessageDialog(gui,"Р’С‹ РЅРµ РІС‹Р±СЂР°Р»Рё РїР°РїРєРё РёР»Рё РїР°РїРєРё РЅРµ СЃСѓС‰РµСЃС‚РІСѓСЋС‚!","РћС€РёР±РєР°!",JOptionPane.WARNING_MESSAGE);
 				return;
 			}
 			if(settings.inFolder.equals(settings.outFolder)){
-				JOptionPane.showMessageDialog(gui,"Папке не нужно синхронизироватся самой с собой!","Ошибка!",JOptionPane.WARNING_MESSAGE);
+				JOptionPane.showMessageDialog(gui,"РџР°РїРєРµ РЅРµ РЅСѓР¶РЅРѕ СЃРёРЅС…СЂРѕРЅРёР·РёСЂРѕРІР°С‚СЃСЏ СЃР°РјРѕР№ СЃ СЃРѕР±РѕР№!","РћС€РёР±РєР°!",JOptionPane.WARNING_MESSAGE);
 				return;
 			}
 			double time=System.currentTimeMillis();
 			gui.setContentPane(gui.infoPanel);
 			gui.infoPanel.ok.setEnabled(false);
-			gui.infoPanel.plusInfo("Синхронизация...","");
+			gui.infoPanel.plusInfo("РЎРёРЅС…СЂРѕРЅРёР·Р°С†РёСЏ...","");
 			gui.setVisible(true);
 			try {
 				scanFolder(new File(settings.inFolder));
@@ -127,7 +127,7 @@ public class Synhronaizer extends Thread{
 				e.printStackTrace();
 			}
 			
-			gui.infoPanel.plusInfo("Удаление...","");
+			gui.infoPanel.plusInfo("РЈРґР°Р»РµРЅРёРµ...","");
 			if(settings.delete)
 				try {
 					scanFolderDelete(new File(settings.outFolder));
@@ -135,6 +135,6 @@ public class Synhronaizer extends Thread{
 					e.printStackTrace();
 				}
 			gui.infoPanel.ok.setEnabled(true);
-			gui.infoPanel.setInfo("Синхронизация завершена!\nСинхронизированно " + n_synh_files+" файлов\nУдалено " + n_delete_files+" файлов\nПрошло вермени: "+(System.currentTimeMillis()-time)/1000+" секунд");
+			gui.infoPanel.setInfo("РЎРёРЅС…СЂРѕРЅРёР·Р°С†РёСЏ Р·Р°РІРµСЂС€РµРЅР°!\nРЎРёРЅС…СЂРѕРЅРёР·РёСЂРѕРІР°РЅРЅРѕ " + n_synh_files+" С„Р°Р№Р»РѕРІ\nРЈРґР°Р»РµРЅРѕ " + n_delete_files+" ГґГ Г©Г«Г®Гў\nГЏГ°Г®ГёГ«Г® ГўГҐГ°Г¬ГҐГ­ГЁ: "+(System.currentTimeMillis()-time)/1000+" Г±ГҐГЄГіГ­Г¤");
 	}
 }
